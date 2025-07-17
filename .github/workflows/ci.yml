@@ -32,7 +32,7 @@ jobs:
           path: testResults/*.xml  
       - name: Generate PPTX via mlreportgen API
         #     shell: cmd
-        # run: |
+         # run: |
         #     # REM reports klasörü yoksa oluştur
         #     if not exist reports md reports
         # 
