@@ -18,8 +18,8 @@ jobs:
 
       - name: Run all tests (JUnit)
         shell:
-          name: pwsh
-          options: -NoProfile -ExecutionPolicy Bypass -Command
+          # name: pwsh
+          # options: -NoProfile -ExecutionPolicy Bypass -Command
         run: |
           matlab -batch "runtests( ...
             'IncludeSubfolders',true, ...
