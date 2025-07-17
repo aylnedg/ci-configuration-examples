@@ -30,12 +30,12 @@ jobs:
         with:
           name: junit-xml
           path: testResults/*.xml
-          
+
      # ----- PDF Rapor Oluşturma -----
       - name: Generate PDF Test Report
         run: |
           if not exist reports md reports
-          matlab -r "import mlreportgen.report.*; import mlreportgen.dom.*; \
+          matlab -batch "import mlreportgen.report.*; import mlreportgen.dom.*; \
             rpt = Report('reports/TestResultsReport','pdf'); \
             tr  = TestReport('testResults/tests.xml'); \
             append(rpt,tr); \
@@ -51,7 +51,7 @@ jobs:
       - name: Generate PPTX Test Report
         run: |
           if not exist reports md reports
-          matlab -r "import mlreportgen.report.*; import mlreportgen.ppt.*; \
+          matlab -batch "import mlreportgen.report.*; import mlreportgen.ppt.*; \
             rpt = Report('reports/TestResultsReport','pptx'); \
             tr  = TestReport('testResults/tests.xml'); \
             append(rpt,tr); \
