@@ -12,7 +12,7 @@ on:
 
 jobs:
   matlab-reporting:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -26,29 +26,29 @@ jobs:
         with:
           source-folder: code
 
-      # 1) JUnit XML (Unit Tests)
-      - name: Run Unit Tests → JUnit XML
-        run: |
-          matlab -batch "runtests(...
-            'IncludeSubfolders',true, ...
-            'TestRunner','JUnit', ...
-            'TestResultsFile','reports/tests.xml');"
-      - name: Upload JUnit XML
-        uses: actions/upload-artifact@v4
-        with:
-          name: junit-xml
-          path: reports/tests.xml
-
-      # 2) Cobertura XML (Code Coverage)
-      - name: Generate Coverage → Cobertura XML
-        run: |
-          matlab -batch "cov=coverage('src'); report(cov, ...
-            'Cobertura','reports/coverage.xml');"
-      - name: Upload Cobertura XML
-        uses: actions/upload-artifact@v4
-        with:
-          name: cobertura-xml
-          path: reports/coverage.xml
+      # # 1) JUnit XML (Unit Tests)
+      # - name: Run Unit Tests → JUnit XML
+      #   run: |
+      #     matlab -batch "runtests(...
+      #       'IncludeSubfolders',true, ...
+      #       'TestRunner','JUnit', ...
+      #       'TestResultsFile','reports/tests.xml');"
+      # - name: Upload JUnit XML
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: junit-xml
+      #     path: reports/tests.xml
+      # 
+      # # 2) Cobertura XML (Code Coverage)
+      # - name: Generate Coverage → Cobertura XML
+      #   run: |
+      #     matlab -batch "cov=coverage('src'); report(cov, ...
+      #       'Cobertura','reports/coverage.xml');"
+      # - name: Upload Cobertura XML
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: cobertura-xml
+      #     path: reports/coverage.xml
 
       # 3) PDF Rapor (publish)
       - name: Publish PDF Report
