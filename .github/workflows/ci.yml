@@ -99,7 +99,7 @@ jobs:
       #  with: 
 
       #    command: disp('Running my custom testing procedure!'); addpath('code'); results = runtests('IncludeSubfolders', true); assertSuccess(results); 
-=======
+
 # This is a basic workflow to help you get started with MATLAB Actions
 
 name: MATLAB Build
@@ -145,4 +145,3 @@ jobs:
       #  uses: matlab-actions/run-command@v2
       #  with:
       #    command: disp('Running my custom testing procedure!'); addpath('code'); results = runtests('IncludeSubfolders', true); assertSuccess(results);
->>>>>>> feeb1b922e25deb886fdad0cccc0f6a8caac7a49
