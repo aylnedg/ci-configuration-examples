@@ -31,13 +31,13 @@ jobs:
           name: junit-xml
           path: testResults/*.xml  
       - name: Generate PPTX via mlreportgen API
-            shell: cmd
-        run: |
-            # REM reports klasörü yoksa oluştur
-            if not exist reports md reports
-
-            # REM Tek satırda tüm MATLAB komutlarını -r içinde ver
-            matlab -r "import mlreportgen.ppt.*; ppt = Presentation('reports/summary.pptx'); open(ppt); add(ppt,'Title Slide'); close(ppt); exit;"
+        #     shell: cmd
+        # run: |
+        #     # REM reports klasörü yoksa oluştur
+        #     if not exist reports md reports
+        # 
+        #     # REM Tek satırda tüm MATLAB komutlarını -r içinde ver
+        #     matlab -r "import mlreportgen.ppt.*; ppt = Presentation('reports/summary.pptx'); open(ppt); add(ppt,'Title Slide'); close(ppt); exit;"
 
 
       - name: Upload PPTX
