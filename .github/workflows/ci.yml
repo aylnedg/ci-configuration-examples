@@ -29,285 +29,36 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: junit-xml
-          path: testResults/*.xml  
-      # - name: Generate PPTX via mlreportgen API
-      #   #     shell: cmd
-         # run: |
-        #     # REM reports klasörü yoksa oluştur
-        #     if not exist reports md reports
-        # 
-        #     # REM Tek satırda tüm MATLAB komutlarını -r içinde ver
-        #     matlab -r "import mlreportgen.ppt.*; ppt = Presentation('reports/summary.pptx'); open(ppt); add(ppt,'Title Slide'); close(ppt); exit;"
+          path: testResults/*.xml
+          
+     # ----- PDF Rapor Oluşturma -----
+      - name: Generate PDF Test Report
+        run: |
+          if not exist reports md reports
+          matlab -r "import mlreportgen.report.*; import mlreportgen.dom.*; \
+            rpt = Report('reports/TestResultsReport','pdf'); \
+            tr  = TestReport('testResults/tests.xml'); \
+            append(rpt,tr); \
+            close(rpt); \
+            exit;"
+      - name: Upload PDF Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: pdf-report
+          path: reports/*.pdf
 
-
-      - name: Upload PPTX
+      # ----- PPTX Sunum Oluşturma -----
+      - name: Generate PPTX Test Report
+        run: |
+          if not exist reports md reports
+          matlab -r "import mlreportgen.report.*; import mlreportgen.ppt.*; \
+            rpt = Report('reports/TestResultsReport','pptx'); \
+            tr  = TestReport('testResults/tests.xml'); \
+            append(rpt,tr); \
+            close(rpt); \
+            exit;"
+      - name: Upload PPTX Report
         uses: actions/upload-artifact@v4
         with:
           name: pptx-report
           path: reports/*.pptx
-
-      # - name: Run all tests (JUnit)
-      #   # shell:
-      #     # name: pwsh
-      #     # options: -NoProfile -ExecutionPolicy Bypass -Command
-      #   run: |
-      #     matlab -batch "runtests( ...
-      #       'IncludeSubfolders',true, ...
-      #       'TestRunner','JUnit', ...
-      #       'TestResultsFile','reports/tests.xml');"
-      # - name: Upload JUnit XML
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: junit-xml
-      #     path: reports/tests.xml
-      # 
-      # - name: Generate Code Coverage (Cobertura)
-      #   # shell:
-      #   #   name: pwsh
-      #   #   options: -NoProfile -ExecutionPolicy Bypass -Command
-      #   run: |
-      #     matlab -batch "cov = coverage('src'); report(cov, ...
-      #       'Cobertura','reports/coverage.xml');"
-      # - name: Upload Cobertura XML
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: cobertura-xml
-      #     path: reports/coverage.xml
-      # 
-      # - name: Publish PDF Report
-      #   # shell:
-      #   #   name: pwsh
-      #   #   options: -NoProfile -ExecutionPolicy Bypass -Command
-      #   run: |
-      #     matlab -batch "opts = struct('format','pdf','outputDir','reports'); publish('analysis.m',opts);"
-      # - name: Upload PDF Report
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: pdf-report
-      #     path: reports/*.pdf
-      # 
-      # - name: Generate PPTX Presentation
-      #   # shell:
-      #   #   name: pwsh
-      #   #   options: -NoProfile -ExecutionPolicy Bypass -Command
-      #   run: |
-      #     matlab -batch "import mlreportgen.ppt.*; \
-      #       ppt = Presentation('reports/summary.pptx'); \
-      #       open(ppt); \
-      #       add(ppt,'Title Slide'); \
-      #       close(ppt);"
-      # - name: Upload PPTX
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: pptx-report
-      #     path: reports/*.pptx
-
-
-# # .github/workflows/ci.yml
-# name: MATLAB CI + Raporlama
-# 
-# on:
-#   push:
-#     branches: [ main ]
-#   pull_request:
-#     branches: [ main ]
-#   workflow_dispatch:
-# 
-# jobs:
-#   matlab-reporting:
-#     runs-on: self-hosted
-# 
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v4
-# 
-#       - name: Run all tests (JUnit)
-# 
-#         run: |
-#           matlab -batch "runtests( ...
-#             'IncludeSubfolders',true, ...
-#             'TestRunner','JUnit', ...
-#             'TestResultsFile','reports/tests.xml');"
-#       - name: Upload JUnit XML
-#         uses: actions/upload-artifact@v4
-#         with:
-#           name: junit-xml
-#           path: reports/tests.xml
-# 
-#       - name: Generate Code Coverage (Cobertura)
-# 
-#         run: |
-#           matlab -batch "cov = coverage('src'); report(cov, ...
-#             'Cobertura','reports/coverage.xml');"
-#       - name: Upload Cobertura XML
-#         uses: actions/upload-artifact@v4
-#         with:
-#           name: cobertura-xml
-#           path: reports/coverage.xml
-# 
-#       - name: Publish PDF Report
-# 
-#         run: |
-#           matlab -batch "opts = struct('format','pdf','outputDir','reports'); publish('analysis.m',opts);"
-#       - name: Upload PDF Report
-#         uses: actions/upload-artifact@v4
-#         with:
-#           name: pdf-report
-#           path: reports/*.pdf
-# 
-#       - name: Generate PPTX Presentation
-#         run: |
-#           matlab -batch "import mlreportgen.ppt.*; \
-#             ppt = Presentation('reports/summary.pptx'); \
-#             open(ppt); \
-#             add(ppt,'Title Slide'); \
-#             close(ppt);"
-#       - name: Upload PPTX
-#         uses: actions/upload-artifact@v4
-#         with:
-#           name: pptx-report
-#           path: reports/*.pptx
-
-
-
-
-# 
-# # This is a basic workflow to help you get started with MATLAB Actions 
-# 
-# 
-# 
-# name: MATLAB Build 
-# 
-# 
-# 
-# # Controls when the action will run.  
-# 
-# on: 
-# 
-#   # Triggers the workflow on push or pull request events but only for the main branch 
-# 
-#   push: 
-# 
-#     branches: [ main ] 
-# 
-#   pull_request: 
-# 
-#     branches: [ main ] 
-# 
-# 
-# 
-#   # Allows you to run this workflow manually from the Actions tab 
-# 
-#   workflow_dispatch: 
-# 
-# 
-# 
-# jobs: 
-# 
-#   # This workflow contains a single job called "build" 
-# 
-#   build: 
-# 
-#     # The type of runner that the job will run on 
-# 
-#     runs-on: ubuntu-latest
-# 
-# 
-#     # Steps represent a sequence of tasks that will be executed as part of the job 
-# 
-#     steps: 
-# 
-#       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it 
-# 
-#       - uses: actions/checkout@v4 
-# 
-# 
-# 
-#       # Sets up MATLAB on a GitHub-hosted runner 
-# 
-#       - name: Set up MATLAB 
-# 
-#         uses: matlab-actions/setup-matlab@v2 
-# 
-# 
-# 
-#       # Runs a set of commands using the runners shell 
-# 
-#       - name: Run all tests 
-# 
-#         uses: matlab-actions/run-tests@v2 
-# 
-#         with: 
-# 
-#           source-folder: code 
-# 
-#      - name: PDF Raporu Üret (publish)
-#   run: matlab -batch "options = struct('format','pdf','outputDir','reports'); publish('analysis.m','options');"
-# 
-#     - name: PPTX Sunum Üret (Live Script export)
-#   run: matlab -batch "export('presentation.mlx','pptx');"
-
-
-      # You can use "run-build" to invoke the MATLAB build tool and run build tasks 
-
-      #- name: Run the default "test" task in the build file 
-
-      #   uses: matlab-actions/run-build@v2 
-
-  
-
-      # You can use "run-command" to execute custom MATLAB scripts, functions, or statements 
-
-      #- name: Run custom testing procedure 
-
-      #  uses: matlab-actions/run-command@v2 
-
-      #  with: 
-
-      #    command: disp('Running my custom testing procedure!'); addpath('code'); results = runtests('IncludeSubfolders', true); assertSuccess(results); 
-
-# # This is a basic workflow to help you get started with MATLAB Actions
-# 
-# name: MATLAB Build
-# 
-# # Controls when the action will run. 
-# on:
-#   # Triggers the workflow on push or pull request events but only for the main branch
-#   push:
-#     branches: [ main ]
-#   pull_request:
-#     branches: [ main ]
-# 
-#   # Allows you to run this workflow manually from the Actions tab
-#   workflow_dispatch:
-# 
-# jobs:
-#   # This workflow contains a single job called "build"
-#   build:
-#     # The type of runner that the job will run on
-#     runs-on: ubuntu-latest
-# 
-#     # Steps represent a sequence of tasks that will be executed as part of the job
-#     steps:
-#       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-#       - uses: actions/checkout@v4
-# 
-#       # Sets up MATLAB on a GitHub-hosted runner
-#       - name: Set up MATLAB
-#         uses: matlab-actions/setup-matlab@v2
-# 
-#       # Runs a set of commands using the runners shell
-#       - name: Run all tests
-#         uses: matlab-actions/run-tests@v2
-#         with:
-#           source-folder: code
-
-      # You can use "run-build" to invoke the MATLAB build tool and run build tasks
-      #- name: Run the default "test" task in the build file
-      #   uses: matlab-actions/run-build@v2
-
-      # You can use "run-command" to execute custom MATLAB scripts, functions, or statements
-      #- name: Run custom testing procedure
-      #  uses: matlab-actions/run-command@v2
-      #  with:
-      #    command: disp('Running my custom testing procedure!'); addpath('code'); results = runtests('IncludeSubfolders', true); assertSuccess(results);
