@@ -10,22 +10,22 @@ on:
 
 jobs:
   matlab-reporting:
-    runs-on: self-hosted
+    runs-on: [self-hosted, Windows, X64]
 
     steps:
-      # 1) Kaynak kodu çek
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 2) MATLAB + Simulink + Report Generator + Simulink Test lisansları ile setup
-      - name: Setup MATLAB with Toolboxes
+      - name: Setup MATLAB
         uses: matlab-actions/setup-matlab@v2
-  
+        with:
+          release: 'R2024b'
+        shell: pwsh
 
-      # 3) Tüm birim testleri çalıştır (runtests + TestRunner JUnit)
       - name: Run all tests (JUnit)
+        shell: pwsh
         run: |
-          matlab -batch "runtests(...
+          matlab -batch "runtests( ...
             'IncludeSubfolders',true, ...
             'TestRunner','JUnit', ...
             'TestResultsFile','reports/tests.xml');"
@@ -35,10 +35,10 @@ jobs:
           name: junit-xml
           path: reports/tests.xml
 
-      # 4) Kod kapsamı ölçümü (Cobertura)
       - name: Generate Code Coverage (Cobertura)
+        shell: pwsh
         run: |
-          matlab -batch "cov = coverage('src'); report(cov,...
+          matlab -batch "cov = coverage('src'); report(cov, ...
             'Cobertura','reports/coverage.xml');"
       - name: Upload Cobertura XML
         uses: actions/upload-artifact@v4
@@ -46,8 +46,8 @@ jobs:
           name: cobertura-xml
           path: reports/coverage.xml
 
-      # 5) PDF Rapor (publish — ek toolbox gerektirmez)
       - name: Publish PDF Report
+        shell: pwsh
         run: |
           matlab -batch "opts = struct('format','pdf','outputDir','reports'); publish('analysis.m',opts);"
       - name: Upload PDF Report
@@ -56,8 +56,8 @@ jobs:
           name: pdf-report
           path: reports/*.pdf
 
-      # 6) PPTX Sunum (Report Generator PPT API)
       - name: Generate PPTX Presentation
+        shell: pwsh
         run: |
           matlab -batch "import mlreportgen.ppt.*; \
             ppt = Presentation('reports/summary.pptx'); \
@@ -69,6 +69,7 @@ jobs:
         with:
           name: pptx-report
           path: reports/*.pptx
+
 
 
 
