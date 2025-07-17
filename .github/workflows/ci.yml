@@ -36,7 +36,7 @@ jobs:
 
     # The type of runner that the job will run on 
 
-    runs-on: ubuntu-latest 
+    runs-on: self-hosted 
 
   
 
@@ -68,7 +68,19 @@ jobs:
 
           source-folder: code 
 
-  
+   # PDF
+      - name: PDF Raporu Üret
+        run: matlab -batch "import mlreportgen.report.*; rpt=Report('CI_Rapor','pdf'); close(rpt);"
+      # PPTX
+      - name: PPTX Sunum Üret
+        run: matlab -batch "import mlreportgen.ppt.*; ppt=Presentation('CI_Sunum'); open(ppt); add(ppt,'Title Slide'); close(ppt);"
+      - name: Artefaktları Yükle
+        uses: actions/upload-artifact@v4
+        with:
+          name: CI-raporlar
+          path: |
+            CI_Rapor.pdf
+            CI_Sunum.pptx
 
       # You can use "run-build" to invoke the MATLAB build tool and run build tasks 
 
