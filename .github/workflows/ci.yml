@@ -32,9 +32,9 @@ jobs:
           path: reports/tests.xml
 
       - name: Generate Code Coverage (Cobertura)
-        shell:
-          name: pwsh
-          options: -NoProfile -ExecutionPolicy Bypass -Command
+        # shell:
+        #   name: pwsh
+        #   options: -NoProfile -ExecutionPolicy Bypass -Command
         run: |
           matlab -batch "cov = coverage('src'); report(cov, ...
             'Cobertura','reports/coverage.xml');"
@@ -45,9 +45,9 @@ jobs:
           path: reports/coverage.xml
 
       - name: Publish PDF Report
-        shell:
-          name: pwsh
-          options: -NoProfile -ExecutionPolicy Bypass -Command
+        # shell:
+        #   name: pwsh
+        #   options: -NoProfile -ExecutionPolicy Bypass -Command
         run: |
           matlab -batch "opts = struct('format','pdf','outputDir','reports'); publish('analysis.m',opts);"
       - name: Upload PDF Report
@@ -57,9 +57,9 @@ jobs:
           path: reports/*.pdf
 
       - name: Generate PPTX Presentation
-        shell:
-          name: pwsh
-          options: -NoProfile -ExecutionPolicy Bypass -Command
+        # shell:
+        #   name: pwsh
+        #   options: -NoProfile -ExecutionPolicy Bypass -Command
         run: |
           matlab -batch "import mlreportgen.ppt.*; \
             ppt = Presentation('reports/summary.pptx'); \
