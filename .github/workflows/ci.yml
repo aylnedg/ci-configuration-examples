@@ -62,7 +62,6 @@ jobs:
 
       # 4) PPTX Sunum (Report Generator PPT API)
       - name: Generate PPTX Presentation
-        if: secrets.MATLAB_LICENSE_FILE  # Lisans var ise
         run: |
           matlab -batch "import mlreportgen.ppt.*; ppt=Presentation('reports/summary.pptx'); ...
             open(ppt); add(ppt,'Title Slide'); close(ppt);"
