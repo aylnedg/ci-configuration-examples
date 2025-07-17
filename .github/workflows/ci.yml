@@ -32,7 +32,6 @@ jobs:
           path: testResults/*.xml  
       - name: Generate PPTX Presentation
         run: |
-          mkdir -p reports
           matlab -batch "import mlreportgen.ppt.*; \
             ppt = Presentation('reports/summary.pptx'); \
             open(ppt); \
