@@ -30,8 +30,8 @@ jobs:
         with:
           name: junit-xml
           path: testResults/*.xml  
-      - name: Generate PPTX via mlreportgen API
-        #     shell: cmd
+      # - name: Generate PPTX via mlreportgen API
+      #   #     shell: cmd
          # run: |
         #     # REM reports klasörü yoksa oluştur
         #     if not exist reports md reports
