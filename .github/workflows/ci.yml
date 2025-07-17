@@ -10,7 +10,7 @@ on:
 
 jobs:
   matlab-reporting:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       # 1) Kaynak kodu çek
@@ -19,16 +19,8 @@ jobs:
 
       # 2) MATLAB + Simulink + Report Generator + Simulink Test lisansları ile setup
       - name: Setup MATLAB with Toolboxes
-  uses: matlab-actions/setup-matlab@v2
-  with:
-    release: 'R2025a'
-    products: |
-      MATLAB
-      Simulink
-      Simulink Test
-      MATLAB Report Generator
-    cache: 'off'    # isterseniz cache='on'
-
+        uses: matlab-actions/setup-matlab@v2
+  
 
       # 3) Tüm birim testleri çalıştır (runtests + TestRunner JUnit)
       - name: Run all tests (JUnit)
