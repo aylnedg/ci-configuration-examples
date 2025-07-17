@@ -30,13 +30,20 @@ jobs:
         with:
           name: junit-xml
           path: testResults/*.xml  
-      - name: Generate PPTX Presentation
+      - name: Generate PPTX via mlreportgen API
+        shell: cmd
         run: |
-          matlab -batch "import mlreportgen.ppt.*; \
+          REM reports klasörü yoksa oluştur
+          if not exist reports md reports
+
+          REM CMD üzerinden MATLAB’i -r ile çağır
+          matlab -r "import mlreportgen.ppt.*; \
             ppt = Presentation('reports/summary.pptx'); \
             open(ppt); \
             add(ppt,'Title Slide'); \
-            close(ppt);"
+            close(ppt); \
+            exit;"
+
       - name: Upload PPTX
         uses: actions/upload-artifact@v4
         with:
