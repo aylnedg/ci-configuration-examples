@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run all tests (JUnit)
-        shell:
+        # shell:
           # name: pwsh
           # options: -NoProfile -ExecutionPolicy Bypass -Command
         run: |
