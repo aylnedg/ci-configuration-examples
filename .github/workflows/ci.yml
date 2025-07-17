@@ -10,7 +10,7 @@ on:
 
 jobs:
   matlab-reporting:
-    runs-on: [self-hosted, Windows, X64]
+    runs-on: self-hosted
 
     steps:
       - name: Checkout
@@ -20,10 +20,10 @@ jobs:
         uses: matlab-actions/setup-matlab@v2
         with:
           release: 'R2024b'
-        shell: pwsh
+        
 
       - name: Run all tests (JUnit)
-        shell: pwsh
+        
         run: |
           matlab -batch "runtests( ...
             'IncludeSubfolders',true, ...
@@ -36,7 +36,7 @@ jobs:
           path: reports/tests.xml
 
       - name: Generate Code Coverage (Cobertura)
-        shell: pwsh
+        
         run: |
           matlab -batch "cov = coverage('src'); report(cov, ...
             'Cobertura','reports/coverage.xml');"
@@ -47,7 +47,7 @@ jobs:
           path: reports/coverage.xml
 
       - name: Publish PDF Report
-        shell: pwsh
+        
         run: |
           matlab -batch "opts = struct('format','pdf','outputDir','reports'); publish('analysis.m',opts);"
       - name: Upload PDF Report
